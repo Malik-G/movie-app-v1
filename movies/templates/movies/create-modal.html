@@ -11,23 +11,23 @@
             	<form action="{% url 'create' %}" method="post">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="movieName">Name</label>
-                        <input type="text" class="form-control" id="movieName" placeholder="Enter name" name="name"/>
+                        <label for="movieName">Title</label>
+                        <input type="text" class="form-control" id="movieName" placeholder="Enter title" name="name" required/>
                     </div>
 
                     <div class="form-group">
                     	<label for="moviePicture">Picture</label>
-                        <input type="text" class="form-control" id="moviePicture" placeholder="Image URL" name="url"/>
+                        <input type="text" class="form-control" id="moviePicture" placeholder="Enter Image URL" name="url"/>
                     </div>
 
                     <div class="form-group">
                     	<label for="movieRating">Rating</label>
-                        <input type="number" class="form-control" id="movieRating" placeholder="1-10" name="rating" min="1" max="10"/>
+                        <input type="number" class="form-control" id="movieRating" placeholder="Rate the movie 1-10" name="rating" min="1" max="10" required/>
                     </div>
 
                     <div class="form-group">
                     	<label for="movieNotes">Notes</label>
-                        <textarea name="notes" id="movieNotes" class="form-control"></textarea>
+                        <textarea name="notes" id="movieNotes" class="form-control">Write about it...</textarea>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Create new movie</button>

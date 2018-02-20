@@ -20,12 +20,15 @@ def create(request):
     if request.method == 'POST':
         data = {
             'Name': request.POST.get('name'),
-            'Pictures': [{'url': request.POST.get('url')}],
+            'Pictures': [{'url': request.POST.get('url') or 'https://vignette.wikia.nocookie.net/janethevirgin/images/4/42/Image-not-available_1.jpg/revision/latest?cb=20150721102313'}],
             'Rating': int(request.POST.get('rating')),
             'Notes': request.POST.get('notes')
         }
-
-        AT.insert(data)
+        try:
+            updated_table = AT.insert(data)
+            messages.success(request, '{} was successfully ADDED!!'.format(updated_table['fields'].get('Name')))
+        except Exception as e:
+            messages.warning(request, 'Cannot Create: ERROR - {}'.format(e))
     return redirect('/')
 
 
@@ -33,9 +36,22 @@ def edit(request, movie_id):
     if request.method == 'POST':
         data = {
             'Name': request.POST.get('name'),
-            'Pictures': [{'url': request.POST.get('url')}],
+            'Pictures': [{'url': request.POST.get('url') or 'https://vignette.wikia.nocookie.net/janethevirgin/images/4/42/Image-not-available_1.jpg/revision/latest?cb=20150721102313'}],
             'Rating': int(request.POST.get('rating')),
             'Notes': request.POST.get('notes')
         }
-        AT.update(movie_id, data)
+        try:
+            updated_table = AT.update(movie_id, data)
+            messages.info(request, '{} was successfully EDITED!!'.format(updated_table['fields'].get('Name')))
+        except Exception as e:
+            messages.warning(request, 'Cannot Edit: ERROR - {}'.format(e))
+    return redirect('/')
+
+def delete(request, movie_id):
+    try:
+        movie_name = AT.get(movie_id)['fields'].get('Name')
+        updated_table = AT.delete(movie_id)
+        messages.warning(request, '{} has been DELETED!!'.format(movie_name))
+    except Exception as e:
+        messages.warning(request, 'Cannot Delete: ERROR - {}'.format(e))
     return redirect('/')
